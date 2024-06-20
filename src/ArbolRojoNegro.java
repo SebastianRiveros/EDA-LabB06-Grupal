@@ -55,4 +55,23 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         nodo.setPadre(aux);  
         return aux; 
     }
+
+    //metodo para balancear el arbol ante una elminacion o insercion
+    private NodoRojoNegro<T> balancear(NodoRojoNegro<T> nodo) {
+        // Casos de rotación según las reglas del árbol rojo-negro:
+
+        //si el hijo derecho es rojo y el izquierdo es negro
+        if (esRojo(nodo.getDerecha()) && !esRojo(nodo.getIzquierda())) 
+            nodo = rotarIzquierda(nodo);
+
+        //si dos nodos consecutivos son rojos en la rama izquierda
+        if (esRojo(nodo.getIzquierda()) && esRojo(nodo.getIzquierda().getIzquierda())) 
+            nodo = rotarDerecha(nodo); 
+
+        //si ambos hijos son rojos
+        if (esRojo(nodo.getIzquierda()) && esRojo(nodo.getDerecha())) {
+            cambiarColores(nodo);
+        }
+        return nodo;  // Retorna el nodo después de las rotaciones y ajustes
+    }
 }
