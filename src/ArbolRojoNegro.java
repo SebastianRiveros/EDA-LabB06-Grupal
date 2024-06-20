@@ -99,6 +99,21 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         // Realizar las rotaciones y ajustes necesarios para mantener las propiedades del árbol rojo-negro
         return balancear(nodo);
     }
+    public NodoRojoNegro<T> buscar(T dato) {
+        return buscar(raiz, dato);
+    }
+
+    // Método privado recursivo para buscar un dato en el árbol
+    private NodoRojoNegro<T> buscar(NodoRojoNegro<T> nodo, T dato) {
+        if (nodo == null || dato.compareTo(nodo.getDato()) == 0) {
+            return nodo;  // Si el nodo es null o el dato se encuentra, retorna el nodo
+        }
+        if (dato.compareTo(nodo.getDato()) < 0) {
+            return buscar(nodo.getIzquierda(), dato);  // Busca en el subárbol izquierdo
+        } else {
+            return buscar(nodo.getDerecha(), dato);  // Busca en el subárbol derecho
+        }
+    }
 
 
 
