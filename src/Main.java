@@ -9,7 +9,8 @@ public class Main {
             arbol.insertar(k);
         }
 
-        System.out.println("Buscando el nodo con valor 11: " + arbol.buscar(11).getDato());
+        System.out.println("Buscando el nodo : ");
+        arbol.buscar(20);
 
         // Mostrar el árbol en postorden
         System.out.println("Arbol en postorden:");

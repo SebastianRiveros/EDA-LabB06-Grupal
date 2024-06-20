@@ -106,22 +106,27 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         return balancear(nodo);
     }
 
-    public NodoRojoNegro<T> buscar(T dato) {
-        return buscar(raiz, dato);
+    public void buscar(T dato) {
+        buscar(raiz, dato, 0);
     }
 
-    // Método privado recursivo para buscar un dato en el árbol
-    private NodoRojoNegro<T> buscar(NodoRojoNegro<T> nodo, T dato) {
+    // Método privado recursivo para buscar un dato en el árbol y calcular el nivel
+    private void buscar(NodoRojoNegro<T> nodo, T dato, int nivel) {
         if (nodo == null) {
-            return null;  // No se encontró el nodo
+            System.out.println("Dato no encontrado en el árbol.");
+            return;
         }
+
         if (dato.compareTo(nodo.getDato()) == 0) {
-            return nodo;  // Se encontró el nodo
+            String color = nodo.getEsRojo() ? "Rojo" : "Negro";
+            System.out.println("Dato encontrado en el nivel " + nivel + " y es de color " + color + ".");
+            return;
         }
+
         if (dato.compareTo(nodo.getDato()) < 0) {
-            return buscar(nodo.getIzquierda(), dato);  // Busca en el subárbol izquierdo
+            buscar(nodo.getIzquierda(), dato, nivel + 1);  // Busca en el subárbol izquierdo e incrementa el nivel
         } else {
-            return buscar(nodo.getDerecha(), dato);  // Busca en el subárbol derecho
+            buscar(nodo.getDerecha(), dato, nivel + 1);  // Busca en el subárbol derecho e incrementa el nivel
         }
     }
 
