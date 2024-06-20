@@ -1,5 +1,3 @@
-
-
 public class ArbolRojoNegro<T extends Comparable<T>> {
     private NodoRojoNegro<T> raiz;
 
@@ -7,6 +5,7 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         this.raiz = null;
     }
 
+    public NodoRojoNegro<T> getRaiz(){return this.raiz;}
     //metodo auxiliar para conocer el estado rojo o negro del nodo
     private boolean esRojo(NodoRojoNegro<T> nodo) {
         if (nodo == null) {

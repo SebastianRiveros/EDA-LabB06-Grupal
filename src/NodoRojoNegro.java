@@ -1,5 +1,3 @@
-
-
 public class NodoRojoNegro<T extends Comparable<T>> {
     private T dato;  //dato almacenado en el nodo
     private NodoRojoNegro<T> izquierda, derecha, padre;  //nodos hijos y padre
