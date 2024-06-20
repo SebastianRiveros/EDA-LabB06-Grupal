@@ -12,4 +12,11 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         }
         return nodo.getEsRojo();  //devuelve el estado de color del nodo (true si es rojo, false si es negro)
     }
+
+    //metodo auxiliar para cambiar colores 
+    private void cambiarColores(NodoRojoNegro<T> nodo) {
+        nodo.setEsRojo(true);  // El nodo actual se convierte en rojo
+        nodo.getIzquierda().setEsRojo(false);  // El hijo izquierdo se convierte en negro
+        nodo.getDerecha().setEsRojo(false);  // El hijo derecho se convierte en negro
+    }
 }
