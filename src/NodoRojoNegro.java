@@ -19,6 +19,9 @@ class NodoRojoNegro<T extends Comparable<T>> {
     public void setIzquierda(NodoRojoNegro<T> izquierda){this.izquierda = izquierda;}
     public NodoRojoNegro<T> getDerecha(){return this.derecha;} 
     public void setDerecha(NodoRojoNegro<T> derecha){this.derecha = derecha;}
+    public NodoRojoNegro<T> getPadre(){return this.padre;} 
+    public void setPadre(NodoRojoNegro<T> padre){this.padre = padre;}
     public boolean getEsRojo(){return this.esRojo;}
     public void setEsRojo(boolean esRojo){this.esRojo = esRojo;}
+    
 }
