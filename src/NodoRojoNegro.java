@@ -1,10 +1,12 @@
-class NodoRojoNegro<T extends Comparable<T>> {
+
+
+public class NodoRojoNegro<T extends Comparable<T>> {
     private T dato;  //dato almacenado en el nodo
     private NodoRojoNegro<T> izquierda, derecha, padre;  //nodos hijos y padre
     private boolean esRojo;  //confirmar si es rojo o no(es negro)
 
     // Constructor
-    NodoRojoNegro(T dato) {
+    public NodoRojoNegro(T dato) {
         this.dato = dato;
         this.izquierda = null;
         this.derecha = null;
@@ -23,5 +25,4 @@ class NodoRojoNegro<T extends Comparable<T>> {
     public void setPadre(NodoRojoNegro<T> padre){this.padre = padre;}
     public boolean getEsRojo(){return this.esRojo;}
     public void setEsRojo(boolean esRojo){this.esRojo = esRojo;}
-    
 }

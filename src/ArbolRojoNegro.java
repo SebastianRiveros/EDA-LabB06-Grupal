@@ -1,3 +1,5 @@
+
+
 public class ArbolRojoNegro<T extends Comparable<T>> {
     private NodoRojoNegro<T> raiz;
 
@@ -24,7 +26,7 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
     private NodoRojoNegro<T> rotarDerecha(NodoRojoNegro<T> nodo) {
         NodoRojoNegro<T> aux = nodo.getIzquierda();
         nodo.setIzquierda(aux.getDerecha());  // El hijo derecho del hijo izquierdo pasa a ser el nuevo hijo izquierdo del nodo
-        if (aux.getDerecha() != null)
+        if (aux.getDerecha()!= null)
             aux.getDerecha().setPadre(nodo);  // Establece al nodo como padre del nuevo hijo izquierdo del nodo
         aux.setPadre(nodo.getPadre());  // El padre del nodo temporal se convierte en el padre del nodo actual
         if (nodo.getPadre() == null) 
@@ -42,7 +44,7 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
     private NodoRojoNegro<T> rotarIzquierda(NodoRojoNegro<T> nodo) {
         NodoRojoNegro<T> aux = nodo.getDerecha();  
         nodo.setDerecha(aux.getIzquierda());  
-        if (aux.getIzquierda() != null) 
+        if (aux.getIzquierda()!= null) 
             aux.getIzquierda().setPadre(nodo);  
         aux.setPadre(nodo.getPadre());  
         if (nodo.getPadre() == null) 
@@ -61,7 +63,7 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         // Casos de rotación según las reglas del árbol rojo-negro:
 
         //si el hijo derecho es rojo y el izquierdo es negro
-        if (esRojo(nodo.getDerecha()) && !esRojo(nodo.getIzquierda())) 
+        if (esRojo(nodo.getDerecha()) &&!esRojo(nodo.getIzquierda())) 
             nodo = rotarIzquierda(nodo);
 
         //si dos nodos consecutivos son rojos en la rama izquierda
@@ -69,15 +71,19 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
             nodo = rotarDerecha(nodo); 
 
         //si ambos hijos son rojos
-        if (esRojo(nodo.getIzquierda()) && esRojo(nodo.getDerecha())) {
+        if(esRojo(nodo.getIzquierda()) && esRojo(nodo.getDerecha())) {
             cambiarColores(nodo);
         }
         return nodo;  // Retorna el nodo después de las rotaciones y ajustes
     }
 
     public void insertar(T dato) {
-        raiz = insertar(raiz, dato);
-        raiz.setEsRojo(false);
+        if (raiz == null) {
+            raiz = new NodoRojoNegro<>(dato);
+            raiz.setEsRojo(false);
+        } else {
+            raiz = insertar(raiz, dato);
+        }
     }
 
     // Método recursivo para insertar un dato en el árbol
@@ -99,14 +105,18 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         // Realizar las rotaciones y ajustes necesarios para mantener las propiedades del árbol rojo-negro
         return balancear(nodo);
     }
+
     public NodoRojoNegro<T> buscar(T dato) {
         return buscar(raiz, dato);
     }
 
     // Método privado recursivo para buscar un dato en el árbol
     private NodoRojoNegro<T> buscar(NodoRojoNegro<T> nodo, T dato) {
-        if (nodo == null || dato.compareTo(nodo.getDato()) == 0) {
-            return nodo;  // Si el nodo es null o el dato se encuentra, retorna el nodo
+        if (nodo == null) {
+            return null;  // No se encontró el nodo
+        }
+        if (dato.compareTo(nodo.getDato()) == 0) {
+            return nodo;  // Se encontró el nodo
         }
         if (dato.compareTo(nodo.getDato()) < 0) {
             return buscar(nodo.getIzquierda(), dato);  // Busca en el subárbol izquierdo
@@ -115,49 +125,101 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         }
     }
 
+    public void eliminar(T dato) {
+        raiz = eliminar(raiz, dato);
+    }
 
+    private NodoRojoNegro<T> eliminar(NodoRojoNegro<T> nodo, T dato) {
+        if (nodo == null) {
+            return null;
+        }
 
+        if (dato.compareTo(nodo.getDato()) < 0) {
+            nodo.setIzquierda(eliminar(nodo.getIzquierda(), dato));
+        } else if (dato.compareTo(nodo.getDato()) > 0) {
+            nodo.setDerecha(eliminar(nodo.getDerecha(), dato));
+        } else {
+            // Nodo encontrado, eliminarlo
+            if (nodo.getIzquierda()== null && nodo.getDerecha() == null) {
+                // Nodo hoja, eliminarlo directamente
+                return null;
+            } else if (nodo.getIzquierda() == null) {
+                // Nodo con un hijo derecho, reemplazar con el hijo derecho
+                return nodo.getDerecha();
+            } else if (nodo.getDerecha() == null) {
+                // Nodo con un hijo izquierdo, reemplazar con el hijo izquierdo
+                return nodo.getIzquierda();
+            } else {
+                // Nodo con dos hijos, encontrar el nodo de reemplazo
+                NodoRojoNegro<T> reemplazo = encontrarReemplazo(nodo);
+                nodo.setDato(reemplazo.getDato());
+                nodo.setIzquierda(eliminar(nodo.getIzquierda(), reemplazo.getDato()));
+            }
+        }
 
-    //Recorridos
+        return balancear(nodo);
+    }
+
+    private NodoRojoNegro<T> encontrarReemplazo(NodoRojoNegro<T> nodo) {
+        // Encontrar el nodo de reemplazo en el subárbol derecho
+        NodoRojoNegro<T> reemplazo = nodo.getDerecha();
+        while (reemplazo.getIzquierda()!= null) {
+            reemplazo = reemplazo.getIzquierda();
+        }
+        return reemplazo;
+    }
+
+    public void mostrarRecorridoInorden() {
+        recorridoInorden(raiz);
+    }
+
+    private void recorridoInorden(NodoRojoNegro<T> nodo) {
+        if (nodo!= null) {
+            recorridoInorden(nodo.getIzquierda());
+            System.out.print(nodo.getDato());
+            if (nodo.getEsRojo()) {
+                System.out.print(" (Rojo) ");
+            } else {
+                System.out.print(" (Negro) ");
+            }
+            System.out.println();
+            recorridoInorden(nodo.getDerecha());
+        }
+    }
+
     public void mostrarRecorridoPostorden() {
         recorridoPostorden(raiz);
     }
 
-    // Método privado recursivo para recorrer y mostrar el árbol en postorden
     private void recorridoPostorden(NodoRojoNegro<T> nodo) {
-        if (nodo != null) {
-            // Primero se muestra el subárbol izquierdo
+        if (nodo!= null) {
             recorridoPostorden(nodo.getIzquierda());
-
-            // Luego se muestra el subárbol derecho
             recorridoPostorden(nodo.getDerecha());
-
-            // Finalmente se muestra el nodo actual con su dato y color
             System.out.print(nodo.getDato());
-            if (nodo.getEsRojo()) 
+            if (nodo.getEsRojo()) {
                 System.out.print(" (Rojo) ");
-            else
+            } else {
                 System.out.print(" (Negro) ");
+            }
+            System.out.println();
         }
     }
+
     public void mostrarRecorridoPreorden() {
         recorridoPreorden(raiz);
     }
 
-    // Método privado recursivo para recorrer y mostrar el árbol en preorden
     private void recorridoPreorden(NodoRojoNegro<T> nodo) {
-        if (nodo != null) {
-            // Primero se muestra el nodo actual con su dato y color
+        if (nodo!= null) {
             System.out.print(nodo.getDato());
-            if (nodo.getEsRojo()) 
+            if (nodo.getEsRojo()) {
                 System.out.print(" (Rojo) ");
-            else
+            } else {
                 System.out.print(" (Negro) ");
-            // Luego se muestra el subárbol izquierdo
-            recorridoPreorden(nodo.getIzquierda()); 
-            // Luego se muestra el subárbol derecho    
+            }
+            System.out.println();
+            recorridoPreorden(nodo.getIzquierda());
             recorridoPreorden(nodo.getDerecha());
-               
         }
     }
 }
