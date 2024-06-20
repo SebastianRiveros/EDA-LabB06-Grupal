@@ -125,4 +125,24 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
                 System.out.print(" (Negro) ");
         }
     }
+    public void mostrarRecorridoPreorden() {
+        recorridoPreorden(raiz);
+    }
+
+    // Método privado recursivo para recorrer y mostrar el árbol en preorden
+    private void recorridoPreorden(NodoRojoNegro<T> nodo) {
+        if (nodo != null) {
+            // Primero se muestra el nodo actual con su dato y color
+            System.out.print(nodo.getDato());
+            if (nodo.getEsRojo()) 
+                System.out.print(" (Rojo) ");
+            else
+                System.out.print(" (Negro) ");
+            // Luego se muestra el subárbol izquierdo
+            recorridoPreorden(nodo.getIzquierda()); 
+            // Luego se muestra el subárbol derecho    
+            recorridoPreorden(nodo.getDerecha());
+               
+        }
+    }
 }

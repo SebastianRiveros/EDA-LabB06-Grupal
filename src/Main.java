@@ -27,5 +27,7 @@ public class Main {
         // Mostrar el árbol en postorden
         System.out.println("Arbol en postorden:");
         arbol.mostrarRecorridoPostorden();
+        System.out.println("\nArbol en preorden:");
+        arbol.mostrarRecorridoPreorden();
     }
 }
