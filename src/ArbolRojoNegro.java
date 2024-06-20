@@ -74,4 +74,31 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
         }
         return nodo;  // Retorna el nodo después de las rotaciones y ajustes
     }
+
+    public void insertar(T dato) {
+        raiz = insertar(raiz, dato);
+        raiz.setEsRojo(false);
+    }
+
+    // Método recursivo para insertar un dato en el árbol
+    private NodoRojoNegro<T> insertar(NodoRojoNegro<T> nodo, T dato) {
+        // Caso base: si el nodo es null, se crea un nuevo nodo con el dato
+        if (nodo == null) {
+            return new NodoRojoNegro<>(dato);
+        }
+
+        // Insertar recursivamente según el valor del dato
+        if (dato.compareTo(nodo.getDato()) <= 0) {
+            nodo.setIzquierda(insertar(nodo.getIzquierda(), dato));
+            nodo.getIzquierda().setPadre(nodo);
+        } else if (dato.compareTo(nodo.getDato()) > 0) {
+            nodo.setDerecha(insertar(nodo.getDerecha(), dato));
+            nodo.getDerecha().setPadre(nodo);
+        }
+
+        // Realizar las rotaciones y ajustes necesarios para mantener las propiedades del árbol rojo-negro
+        return balancear(nodo);
+    }
+
+
 }
