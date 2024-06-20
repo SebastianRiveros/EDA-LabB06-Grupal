@@ -101,4 +101,28 @@ public class ArbolRojoNegro<T extends Comparable<T>> {
     }
 
 
+
+
+    //Recorridos
+    public void mostrarRecorridoPostorden() {
+        recorridoPostorden(raiz);
+    }
+
+    // Método privado recursivo para recorrer y mostrar el árbol en postorden
+    private void recorridoPostorden(NodoRojoNegro<T> nodo) {
+        if (nodo != null) {
+            // Primero se muestra el subárbol izquierdo
+            recorridoPostorden(nodo.getIzquierda());
+
+            // Luego se muestra el subárbol derecho
+            recorridoPostorden(nodo.getDerecha());
+
+            // Finalmente se muestra el nodo actual con su dato y color
+            System.out.print(nodo.getDato());
+            if (nodo.getEsRojo()) 
+                System.out.print(" (Rojo) ");
+            else
+                System.out.print(" (Negro) ");
+        }
+    }
 }
